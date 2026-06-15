@@ -136,14 +136,6 @@ npm run build
 npm start
 ```
 
-## Troubleshooting
-
-| Issue | Fix |
-|-------|-----|
-| Freighter not detected | Install the extension and refresh the page |
-| Wrong network error | Switch Freighter to Testnet |
-| Balance is 0 | Use Friendbot to fund your testnet account |
-| Transaction fails | Ensure enough XLM for amount + fees; verify recipient address |
 
 ## License
 
