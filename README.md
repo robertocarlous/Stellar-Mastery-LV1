@@ -33,8 +33,8 @@ This app demonstrates the core fundamentals of Stellar development:
 
 ```bash
 # Clone the repository
-git clone https://github.com/robertocarlous/stellar-mastery-white-belt.git
-cd stellar-mastery-white-belt
+git clone https://github.com/robertocarlous/Stellar-Mastery-LV1.git
+cd Stellar-Mastery-LV1
 
 # Install dependencies
 npm install
