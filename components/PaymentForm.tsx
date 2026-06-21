@@ -8,16 +8,9 @@ import {
   getStellarErrorMessage,
   isValidStellarAddress,
   MIN_CREATE_ACCOUNT_XLM,
-  NETWORK_PASSPHRASE,
   submitSignedTransaction,
 } from '@/lib/stellar';
-import { signWithFreighter } from '@/lib/freighter';
 import TransactionResult from '@/components/TransactionResult';
-
-type PaymentFormProps = {
-  publicKey: string;
-  onSuccess?: () => void;
-};
 
 type TxFeedback = {
   status: 'success' | 'error';
@@ -25,7 +18,13 @@ type TxFeedback = {
   hash?: string;
 };
 
-export default function PaymentForm({ publicKey, onSuccess }: PaymentFormProps) {
+type PaymentFormProps = {
+  publicKey: string;
+  signTransaction: (xdr: string) => Promise<string>;
+  onSuccess?: () => void;
+};
+
+export default function PaymentForm({ publicKey, signTransaction, onSuccess }: PaymentFormProps) {
   const [destination, setDestination] = useState('');
   const [amount, setAmount] = useState('');
   const [memo, setMemo] = useState('');
@@ -93,7 +92,7 @@ export default function PaymentForm({ publicKey, onSuccess }: PaymentFormProps) 
         memo: memo || undefined,
       });
 
-      const signedXdr = await signWithFreighter(transaction.toXDR(), NETWORK_PASSPHRASE);
+      const signedXdr = await signTransaction(transaction.toXDR());
       const result = await submitSignedTransaction(signedXdr);
 
       if (!result.success) {

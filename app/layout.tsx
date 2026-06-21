@@ -2,9 +2,9 @@ import type { Metadata } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Stellar Mastery | White Belt Payment dApp',
+  title: 'Stellar Mastery | Level 2 Live Poll dApp',
   description:
-    'Level 1 White Belt Stellar dApp — connect Freighter, view XLM balance, and send testnet payments.',
+    'Level 2 Yellow Belt — multi-wallet StellarWalletsKit, Soroban poll contract, real-time events, and transaction status on testnet.',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

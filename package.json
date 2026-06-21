@@ -1,17 +1,20 @@
 {
   "name": "stellar-mastery-white-belt",
   "version": "1.0.0",
-  "description": "Level 1 White Belt - Stellar testnet payment dApp with Freighter wallet",
+  "description": "Stellar Mastery Level 1 & 2 — testnet dApp with multi-wallet and Soroban poll contract",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "contract:build": "cd contracts && stellar contract build",
+    "contract:deploy": "node scripts/deploy-contract.mjs"
   },
   "dependencies": {
+    "@creit.tech/stellar-wallets-kit": "^2.3.0",
     "@stellar/freighter-api": "^4.1.0",
-    "@stellar/stellar-sdk": "^13.1.0",
+    "@stellar/stellar-sdk": "^16.0.1",
     "next": "14.2.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
