@@ -1,14 +1,17 @@
 {
-  "name": "stellar-mastery-white-belt",
-  "version": "1.0.0",
-  "description": "Stellar Mastery Level 1 & 2 — testnet dApp with multi-wallet and Soroban poll contract",
+  "name": "stellar-mastery-lv3",
+  "version": "3.0.0",
+  "description": "Stellar Mastery Level 3 — production-ready dApp with inter-contract Soroban, CI/CD, and tests",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "contract:build": "cd contracts && stellar contract build",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "contract:build": "cd contracts && stellar contract build --out-dir .",
+    "contract:test": "cd contracts && cargo test",
     "contract:deploy": "node scripts/deploy-contract.mjs"
   },
   "dependencies": {
@@ -24,8 +27,11 @@
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "autoprefixer": "^10.4.19",
+    "eslint": "^8.57.1",
+    "eslint-config-next": "^14.2.0",
     "postcss": "^8.4.38",
     "tailwindcss": "^3.4.4",
-    "typescript": "^5.4.5"
+    "typescript": "^5.4.5",
+    "vitest": "^2.1.0"
   }
 }
