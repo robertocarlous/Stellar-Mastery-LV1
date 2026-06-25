@@ -30,6 +30,13 @@ A Stellar testnet dApp that grows from **Level 1 (White Belt)** payment basics t
 
 **Project idea:** Live Poll with registry — admin-managed poll lifecycle and cross-contract vote validation.
 
+## Live demo & video
+
+| Resource | Link |
+|----------|------|
+| **Live demo (Vercel)** | [https://stellar-mastery-lv-1.vercel.app/](https://stellar-mastery-lv-1.vercel.app/) |
+| **Demo video (Loom)** | [https://www.loom.com/share/6442a2386bd944d49308f174c2089d40](https://www.loom.com/share/6442a2386bd944d49308f174c2089d40) |
+
 ## Tech stack
 
 | Technology | Purpose |
@@ -213,13 +220,33 @@ GitHub Actions workflow at `.github/workflows/ci.yml` runs on every push/PR:
 
 ## Screenshots (Level 3)
 
-> Add these after deploying and capturing:
+### Live demo — wallet connected, poll, and event feed
 
-| Screenshot | Path |
-|------------|------|
-| Mobile responsive UI | `public/screenshots/level3-mobile.png` |
-| CI/CD pipeline running | `public/screenshots/level3-ci.png` |
-| Test output (3+ passing) | `public/screenshots/level3-tests.png` |
+Deployed on Vercel with poll + registry contracts, live vote event stream, and transaction history.
+
+![Level 3 live demo](./public/screenshots/level3-live-demo.png)
+
+### Frontend tests — 7 passing (Vitest)
+
+![Level 3 frontend tests](./public/screenshots/level3-frontend-tests.png)
+
+### Contract tests — 8 passing (cargo test)
+
+5 tests in `live_poll` + 3 tests in `poll_registry`.
+
+![Level 3 contract tests](./public/screenshots/level3-contract-tests.png)
+
+### Lint & production build
+
+ESLint passes with no warnings; Next.js production build completes successfully.
+
+![Level 3 lint and build](./public/screenshots/level3-lint-build.png)
+
+### Full CI pipeline (local verification)
+
+Contract tests, lint, and production build — mirrors the GitHub Actions workflow in `.github/workflows/ci.yml`.
+
+![Level 3 full test and build](./public/screenshots/level3-full-test-build.png)
 
 ## Level 3 submission checklist
 
@@ -227,14 +254,14 @@ GitHub Actions workflow at `.github/workflows/ci.yml` runs on every push/PR:
 |-------------|--------|
 | Public GitHub repository | ✅ |
 | README with complete documentation | ✅ |
-| Minimum 10+ meaningful commits | ⬜ Push commits to GitHub |
-| Live demo link (Vercel/Netlify) | ⬜ Deploy to Vercel |
+| Minimum 10+ meaningful commits | ✅ |
+| Live demo link (Vercel/Netlify) | ✅ [stellar-mastery-lv-1.vercel.app](https://stellar-mastery-lv-1.vercel.app/) |
 | Contract deployment address | ✅ |
 | Transaction hash for contract interaction | ✅ |
-| Screenshot: mobile responsive UI | ⬜ Capture after deploy |
-| Screenshot: CI/CD pipeline running | ⬜ Capture from GitHub Actions |
-| Screenshot: test output (3+ passing) | ⬜ Capture `npm test` + `cargo test` |
-| Demo video link (1–2 min) | ⬜ Record walkthrough |
+| Screenshot: mobile responsive UI | ✅ |
+| Screenshot: CI/CD pipeline running | ✅ (local CI verification — GitHub Actions blocked by account billing) |
+| Screenshot: test output (3+ passing) | ✅ (8 contract + 7 frontend tests) |
+| Demo video link (1–2 min) | ✅ [Loom walkthrough](https://www.loom.com/share/6442a2386bd944d49308f174c2089d40) |
 
 ### Level 3 feature checklist
 
@@ -249,6 +276,8 @@ GitHub Actions workflow at `.github/workflows/ci.yml` runs on every push/PR:
 - [x] Production-ready architecture (env validation, security headers, docs)
 
 ## Deployment (Vercel)
+
+**Live app:** [https://stellar-mastery-lv-1.vercel.app/](https://stellar-mastery-lv-1.vercel.app/)
 
 ```bash
 npm run build
