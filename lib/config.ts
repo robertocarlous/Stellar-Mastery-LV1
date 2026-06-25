@@ -11,6 +11,9 @@ export const NETWORK_PASSPHRASE =
 export const POLL_CONTRACT_ID =
   process.env.NEXT_PUBLIC_POLL_CONTRACT_ID ?? '';
 
+export const REGISTRY_CONTRACT_ID =
+  process.env.NEXT_PUBLIC_REGISTRY_CONTRACT_ID ?? '';
+
 export const EXPLORER_TX = (hash: string) =>
   `https://stellar.expert/explorer/testnet/tx/${hash}`;
 

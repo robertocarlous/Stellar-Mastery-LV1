@@ -1,10 +1,16 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Stellar Mastery | Level 2 Live Poll dApp',
+  title: 'Stellar Mastery | Level 3 Production dApp',
   description:
-    'Level 2 Yellow Belt — multi-wallet StellarWalletsKit, Soroban poll contract, real-time events, and transaction status on testnet.',
+    'Level 3 Orange Belt — advanced Soroban contracts, inter-contract communication, real-time events, CI/CD, and production-ready dApp on testnet.',
+};
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  viewportFit: 'cover',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

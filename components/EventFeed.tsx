@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { fetchVoteEvents, type VoteEventItem } from '@/lib/contract/events';
+import { useEventStream } from '@/hooks/useEventStream';
 import { formatAddress } from '@/lib/stellar';
 import { EXPLORER_TX } from '@/lib/config';
 
@@ -9,75 +9,86 @@ type EventFeedProps = {
   refreshKey?: number;
 };
 
+const STATUS_LABEL: Record<string, string> = {
+  connecting: 'Connecting…',
+  live: 'Live',
+  error: 'Reconnecting…',
+  paused: 'Paused',
+};
+
 export default function EventFeed({ refreshKey = 0 }: EventFeedProps) {
-  const [events, setEvents] = useState<VoteEventItem[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const { events, status, error, retry } = useEventStream({
+    refreshKey,
+    pollIntervalMs: 3000,
+    limit: 15,
+  });
+  const [showSkeleton, setShowSkeleton] = useState(true);
 
   useEffect(() => {
-    let active = true;
+    if (events.length > 0 || status === 'error') {
+      setShowSkeleton(false);
+    }
+  }, [events.length, status]);
 
-    const load = async () => {
-      try {
-        const { events: latest } = await fetchVoteEvents({ limit: 15 });
-        if (active) {
-          setEvents(latest);
-          setError(null);
-        }
-      } catch (err) {
-        if (active) {
-          setError(err instanceof Error ? err.message : 'Failed to load events.');
-        }
-      } finally {
-        if (active) setLoading(false);
-      }
-    };
-
-    load();
-    const interval = setInterval(load, 5000);
-
-    return () => {
-      active = false;
-      clearInterval(interval);
-    };
-  }, [refreshKey]);
+  const statusColor =
+    status === 'live'
+      ? 'border-emerald-400/30 bg-emerald-400/10 text-emerald-200'
+      : status === 'error'
+        ? 'border-amber-400/30 bg-amber-400/10 text-amber-200'
+        : 'border-slate-400/30 bg-slate-400/10 text-slate-300';
 
   return (
-    <section className="rounded-2xl border border-white/10 bg-stellar-navy/80 p-6 shadow-xl backdrop-blur">
-      <div className="flex items-center justify-between gap-4">
+    <section className="rounded-2xl border border-white/10 bg-stellar-navy/80 p-4 shadow-xl backdrop-blur sm:p-6">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <p className="text-sm font-medium uppercase tracking-wider text-stellar-cyan">
-            Live Activity
+            Real-time Stream
           </p>
-          <h2 className="mt-1 text-xl font-semibold text-white">Vote Event Feed</h2>
-          <p className="mt-1 text-sm text-slate-400">Polls contract events every 5 seconds</p>
+          <h2 className="mt-1 text-lg font-semibold text-white sm:text-xl">Vote Event Feed</h2>
+          <p className="mt-1 text-xs text-slate-400 sm:text-sm">
+            Cursor-based RPC polling with incremental updates
+          </p>
         </div>
-        <span className="flex items-center gap-1.5 rounded-full border border-emerald-400/30 bg-emerald-400/10 px-3 py-1 text-xs text-emerald-200">
-          <span className="h-2 w-2 animate-pulse rounded-full bg-emerald-400" />
-          Live
-        </span>
+        <button
+          type="button"
+          onClick={retry}
+          className={`flex items-center gap-1.5 self-start rounded-full border px-3 py-1 text-xs ${statusColor}`}
+        >
+          <span
+            className={`h-2 w-2 rounded-full ${
+              status === 'live' ? 'animate-pulse bg-emerald-400' : 'bg-current'
+            }`}
+          />
+          {STATUS_LABEL[status] ?? status}
+        </button>
       </div>
 
       <div className="mt-5 space-y-3">
-        {loading && events.length === 0 && (
+        {showSkeleton && events.length === 0 && (
           <div className="h-20 animate-pulse rounded-xl bg-white/5" />
         )}
-        {error && <p className="text-sm text-red-300">{error}</p>}
-        {!loading && events.length === 0 && !error && (
+        {error && (
+          <p className="rounded-lg border border-amber-400/20 bg-amber-400/5 p-3 text-sm text-amber-200">
+            {error}
+          </p>
+        )}
+        {!showSkeleton && events.length === 0 && !error && (
           <p className="text-sm text-slate-400">No votes yet. Cast the first vote!</p>
         )}
         {events.map((event) => (
           <article
             key={event.id}
-            className="rounded-xl border border-white/5 bg-stellar-dark/50 p-4"
+            className="rounded-xl border border-white/5 bg-stellar-dark/50 p-3 sm:p-4"
           >
-            <div className="flex flex-wrap items-center justify-between gap-2">
+            <div className="flex flex-col gap-1 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between sm:gap-2">
               <p className="text-sm text-white">
                 <span className="font-mono text-stellar-cyan">{formatAddress(event.voter)}</span>
                 {' voted '}
                 <span
                   className={
-                    event.choice === 'yes' ? 'font-semibold text-emerald-300' : 'font-semibold text-red-300'
+                    event.choice === 'yes'
+                      ? 'font-semibold text-emerald-300'
+                      : 'font-semibold text-red-300'
                   }
                 >
                   {event.choice.toUpperCase()}
